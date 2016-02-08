@@ -1,6 +1,8 @@
 /* Print out the classification of a triangle, given three integer lengths
 given on the command line.  If no arguments are given, run the unit tests. */
 
+import java.io.*;
+
 class Triangle {
     // Count how many tests have been run
     private int tests;
@@ -17,26 +19,50 @@ class Triangle {
     // Classify a triangle from the lengths, in string format
     String classify(String d, String e, String f) {
 
-        int a = convertToInt(d);
-        int b = convertToInt(e);
-        int c = convertToInt(f);
+        String answer = null;
+
+        try{
+            int a = convertToInt(d);
+            int b = convertToInt(e);
+            int c = convertToInt(f);
+            answer = findTriangleType(a, b, c);
+        }
+        catch(NumberFormatException exception){
+            answer = "Illegal";
+        }
+        return answer;
+    }
+
+
+    String findTriangleType(int a, int b, int c){
+
+        String answer = null;
 
         if(isZeroLess(a, b, c)){
-            System.out.println("Illegal");
+            answer = "Illegal";
         }
-        else if(a >= (b+c) || c >= (b+a) || b >= (a+c)){
-            System.out.println("Illegal");
+        else if(a > (b+c) || c > (b+a) || b > (a+c)){
+            answer = "Impossible";
         }
+        else if(isFlatTriangle(a, b, c)){
+            answer = "Flat";
+        }   
         else if(isEquilateral(a, b, c)){
-            System.out.println("Equilateral");
+            answer = "Equilateral";
         }        
         else if(isIsosceles(a, b, c)){
-            System.out.println("Isosceles");
+            answer = "Isosceles";
         }
         else if(isScalene(a, b, c)){
-            System.out.println("Scalene");
+
+            answer = "Scalene"; 
+
+            if(isRightTriangle(a, b, c)){
+                answer = "Right";
+            }
         }
-        return null;
+
+        return answer;
     }
 
     int convertToInt(String x){
@@ -75,6 +101,77 @@ class Triangle {
         return false;
     }
 
+    boolean isRightTriangle(int a, int b, int c){
+
+        boolean result = false;
+
+        if(a > b && a > c){
+            result = pythagorasTest(a, b, c);
+        }
+        else if (b > a & b >c){
+            result = pythagorasTest(b, a, c);
+        }
+        else{
+            result = pythagorasTest(c, a, b);
+        }
+
+        return result;
+    }
+
+    boolean pythagorasTest(int x, int y, int z){
+
+        int hypotenuse = x * x;
+
+        if(hypotenuse == (y * y) + (z * z)){
+            return true;
+        }
+        return false;
+    }
+
+    boolean isFlatTriangle(int a, int b, int c){
+
+        boolean flat = false;
+
+        if ((a + b ) == c){
+            flat = true;
+        }
+        else if((b + c) == a){
+            flat = true;
+        }
+        else if((c + a) ==  b){
+            flat = true;
+        }
+
+        return flat;
+    }
+
+
+    boolean isInteger(String x){
+
+        boolean isValidInteger = false;
+
+        try{
+            Integer.parseInt(x);
+
+            isValidInteger = true;
+        }
+        catch(Exception e){
+
+        }
+
+        return isValidInteger;
+    }
+
+    boolean checkInput(String a, String b, String c){
+
+        if(isInteger(a) && isInteger(b) && isInteger(c)){
+            return true;
+        }
+        else{
+            return false;   
+        }
+    }
+
     // Test whether two objects or primitive values such as ints are equal.
     // Throw an error if not, to cause a backtrace with line numbers.
     void is(Object x, Object y) {
@@ -83,8 +180,6 @@ class Triangle {
         if (x != null && x.equals(y)) return;
         throw new Error("Test " + tests + " failed: " + x + ", " + y);
     }
-
-
 
     // Run all the unit tests.
     void test() {
