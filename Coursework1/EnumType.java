@@ -3,7 +3,20 @@
 
 class EnumType{
 
-	public String cross = "X";
-	public String naught = "O";
+	private String cross = "X";
+	private String naught = "O";
+	private String space = " ";
+
+	public String getCross(){
+		return cross;
+	}
+
+	public String getNaught(){
+		return naught;
+	}
+
+	public String getSpace(){
+		return space;
+	}
 
 }

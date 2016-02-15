@@ -4,10 +4,6 @@ import java.util.*;
 
 class Display{
 
-	public void sayDisplay(){
-		System.out.println("Display");
-	}
-
 	private void printTopRow(){
 		System.out.println("   1 2 3");
 	}
