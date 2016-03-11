@@ -4,6 +4,40 @@ import java.util.*;
 
 class Display{
 
+	private String startMessage = "\nStart Game - Player 1 is X and Player 2 is O\n";
+	private String endMessage = "Game Over!";
+	private String player1Wins = "Player 1 is winner";
+	private String player2Wins = "Player 2 is winner";
+	private String gameIsDraw = "Game is a draw";
+	private String invalidInput = " is not a valid position. Please try again.";	
+	private String enterPosition = "\nPlease enter position on board:";
+	private String replayMessage = "Would you like to replace";
+
+
+	public void printStartMessage(){
+		System.out.println(startMessage);
+	}
+
+	public void printEndMessage(){
+		System.out.println(endMessage);
+	}
+
+	public void printPlayer1Wins(){
+		System.out.println(player1Wins);
+	}
+
+	public void printPlayer2Wins(){
+		System.out.println(player2Wins);
+	}
+
+	public void printGameIsDraw(){
+		System.out.println(gameIsDraw);
+	}
+
+	public void printInvalidInput(String userInput){
+		System.out.println(userInput + invalidInput);		
+	}
+
 	private void printTopRow(){
 		System.out.println("   1 2 3");
 	}
@@ -37,10 +71,9 @@ class Display{
 	}
 
 	public String scanUserInput(){
-		System.out.println("Please enter position on board:");
+		System.out.println(enterPosition);
 		Scanner scannedPosition = new Scanner(System.in);
 		String userPosition = scannedPosition.nextLine();
 		return userPosition;
 	}
-
 }

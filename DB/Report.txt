@@ -1,0 +1,42 @@
+Database design and Report
+
+
+------------------
+TO DO:
+
+Record:
+
+- operations of how many field there is
+- Get individual field values
+- Set individual field values
+- Stage 1, for now a record object my contain field names
+- Later stages may make more sense to share field names between records
+
+Tables:
+
+
+
+
+Files:
+
+
+
+Printing:
+
+
+
+Keys:
+
+
+
+
+
+Databases:
+
+
+
+------------------
+
+Notes to keep track of what has changed
+
+Report:

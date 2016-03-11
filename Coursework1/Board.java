@@ -8,7 +8,7 @@ class Board{
 
 	public String[][] board = {{" "," "," "},{" "," "," "},{" "," "," "}};
 
-	Display displayBoard = new Display();
+	Display display = new Display();
 	Position boardPosition = new Position();
 	EnumType symbol = new EnumType();
 
@@ -16,24 +16,19 @@ class Board{
 	String naughtSymbol = symbol.getNaught();
 	String spaceSymbol = symbol.getSpace();
 
-
-
 	public void runGame(String playerSymbol){
 
 		Boolean start = true;
-		Boolean end = false;	
 
 		while (start){
 
-			String userInput = displayBoard.scanUserInput();
+			String userInput = display.scanUserInput();
 
-			if(updateBoard(userInput, playerSymbol)){
-				displayBoard.printBoard(board);
+			if (updateBoard(userInput, playerSymbol)){
+				display.printBoard(board);
 			}
 
-			if (gameWon(board)){
-				start = end;
-			}
+			start = continueGame(board);
 
 			playerSymbol = switchPlayer(playerSymbol);
 		}
@@ -50,7 +45,7 @@ class Board{
 	}
 
 	public void invalidPosition(String userInput, String playerSymbol){
-		System.out.println("Sorry " + userInput + " is not a valid position. Please try again.");
+		display.printInvalidInput(userInput);
 		runGame(playerSymbol);		
 	}
 
@@ -99,6 +94,18 @@ class Board{
 		return false;
 	}
 
+	public Boolean positionAvailable(String[][] board){
+
+		for(int row = 0; row < board.length; row++){
+			for(int col =0; col < board[row].length; col++){
+				if (isSpace(board[row][col])){
+					return true;
+				} 
+			}
+		}
+		return false;
+	}
+
 	public Boolean isSpace(String value){
 		if(value == spaceSymbol){
 			return true;
@@ -106,36 +113,47 @@ class Board{
 		return false;
 	}
 
-/*
-	public Boolean gameDraw(){
+	public Boolean gameDraw(String[][] board){
 
-	}
-*/
-	public Boolean gameWon(String[][] board){
-
-		if (checkRowSymbol(board, crossSymbol)){
-			return true;
-		}
-		if (checkRowSymbol(board, naughtSymbol)){
-			return true;
-		}	
-		if (checkColSymbol(board, crossSymbol)){
-			return true;
-		}
-		if (checkColSymbol(board, naughtSymbol)){
-			return true;
-		}
-		if (checkDiagonalSymbol(board, crossSymbol)){
-			return true;
-		}		
-		if (checkDiagonalSymbol(board, naughtSymbol)){
+		if(!(positionAvailable(board))){
 			return true;
 		}
 		return false;
 	}
 
+	public Boolean gameWon(String[][] board){
+
+		if (matchRowSymbol(board, crossSymbol)){
+			return true;
+		}
+		if (matchRowSymbol(board, naughtSymbol)){
+			return true;
+		}	
+		if (matchColSymbol(board, crossSymbol)){
+			return true;
+		}
+		if (matchColSymbol(board, naughtSymbol)){
+			return true;
+		}
+		if (matchDiagonalSymbol(board, crossSymbol)){
+			return true;
+		}		
+		if (matchDiagonalSymbol(board, naughtSymbol)){
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean continueGame(String[][] board){
+
+		if (gameWon(board) || gameDraw(board)){
+			return false;
+		}
+		return true;
+	}
+
 	// if one of the three rows have the same symbole then return true
-	public Boolean checkRowSymbol(String[][] rowPosition, String symbol){
+	public Boolean matchRowSymbol(String[][] rowPosition, String symbol){
 		if (rowPosition[0][0] == symbol && rowPosition[0][1] == symbol && rowPosition[0][2] == symbol){
 			return true;
 		}
@@ -149,7 +167,7 @@ class Board{
 	}
 
 	// if one of the three columns have the same symbole then return true
-	public Boolean checkColSymbol(String[][] colPosition, String symbol){
+	public Boolean matchColSymbol(String[][] colPosition, String symbol){
 		if (colPosition[0][0] == symbol && colPosition[1][0] == symbol && colPosition[2][0] == symbol){
 			return true;
 		}
@@ -163,7 +181,7 @@ class Board{
 	}
 
 	// if one of the diagonal lines have the same symbole then return true
-	public Boolean checkDiagonalSymbol(String [][] diagPosition, String symbol){
+	public Boolean matchDiagonalSymbol(String [][] diagPosition, String symbol){
 		if(diagPosition[0][0] == symbol && diagPosition[1][1] == symbol && diagPosition[2][2] == symbol){
 			return true;
 		}
@@ -172,7 +190,5 @@ class Board{
 		}
 		return false;
 	}
-
-
 
 }
