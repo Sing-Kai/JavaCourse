@@ -3,72 +3,55 @@ import java.util.*;
 /*       */
 class Record {
 
-	String[] record = {"Name", "Kind", "Age"};
-
-	String getName(){
-		System.out.println(record[0]);
-		return record[0];
-	}
-
-	String getKind(){
-		System.out.println(record[1]);
-		return record[1];
-	}
-
-	String getAge(){
-		System.out.println(record[2]);
-		return record[2];
-	}
-
-	String setName(String newName){
-		record[0] = newName;
-		return newName;
-	}
-
-	String setKind(String newKind){
-		record[1] = newKind;
-		return newKind;
-	}
-
-	String setAge(String newAge){
-		record[2] = newAge;
-		return newAge;
-	}
+	ArrayList<String> record = new ArrayList<String>();
 
 	int countFields(){
-		int counter = 0;
-		for (int i = 0; i < record.length; i++){
-			if (record[i] != null){
-				counter++;
-			}
+		return record.size();
+	}
+
+	void appendField(String value){
+		record.add(value);
+	}
+
+	String getField(int index){
+		if(index < 0 || index > record.size()){
+			throw new Error("Invalid input");
 		}
-		System.out.println(counter);
-		return counter;
+		String field = record.get(index);
+		return field;
+	}
+
+	// sets individual field value
+	void setField(int index, String value){
+		if(index < 0 || index > record.size()){
+			throw new Error("Invalid input");
+		}
+		else{
+			record.set(index, value);			
+		}
 	}
 
 	// Tests
-	private static int tests;
 	public static void main(String[] args) {
-		test();
-    }
 
-    public static void test() {
-    	Record recordTest = new Record();
-    	tests = 0;
-    	is(recordTest.getName(), "Name");
-    	is(recordTest.getKind(), "Kind");
-    	is(recordTest.getAge(), "Age");
-    	is(recordTest.setName("testName"), "testName");
-    	is(recordTest.setKind("testKind"), "testKind");
-    	is(recordTest.setAge("testAge"), "testAge"); 
-    	is(recordTest.countFields(), 3);
-        System.out.println("Tests passed: " + tests);	
-    }
+		Tester t = new Tester();	
+    	Record recordTest = new Record();	
+    	String value;
 
-    static void is(Object x, Object y) {
-        tests++;
-        if (x == y) return;
-        if (x != null && x.equals(y)) return;
-        throw new Error("Test failed: " + x + ", " + y);
-    }  
+    	// Test appendField method and getField Method
+    	recordTest.appendField("Bob");
+     	value = recordTest.getField(0);
+    	t.is(value, "Bob");
+
+    	// Tests setField method
+    	recordTest.appendField("Rick");
+    	recordTest.setField(1, "Morty");
+    	value = recordTest.getField(1);
+    	t.is(value, "Morty");
+
+    	// Tests countFields method
+    	int total = recordTest.countFields();
+    	t.is(total, 2);
+    	t.end();
+    }
 }
